@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 export function authenticateToken(req, res, next) {
   const authHeader = req.headers.authorization;
 
+  //feedb 6
   if (!authHeader) {
     return res.status(401).json({ error: "Unauthorized" });
   }
@@ -23,6 +24,7 @@ export function authenticateToken(req, res, next) {
 
     next();
   } catch (error) {
+    //401
     return res.status(401).json({ error: "Invalid token" });
   }
 }

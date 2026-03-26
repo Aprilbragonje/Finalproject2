@@ -23,7 +23,14 @@ router.get("/", async (req, res, next) => {
       );
     }
 
-    res.status(200).json(users);
+    //feedback punt 5
+    if (users.length === 0) {
+      return res.status(404).json({ error: "No users found" });
+    }
+
+    const safeUsers = users.map(({ password, ...rest }) => rest);
+
+    res.status(200).json(safeUsers);
   } catch (error) {
     next(error);
   }
@@ -37,7 +44,9 @@ router.get("/:id", async (req, res, next) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json(user);
+    const { password, ...safeUser } = user;
+
+    res.status(200).json(safeUser);
   } catch (error) {
     next(error);
   }
@@ -45,9 +54,23 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
+    // Feedb punt 4
+    const existingUsers = await userService.getAllUsers();
+
+    const userExists = existingUsers.find(
+      (u) => u.username === req.body.username,
+    );
+
+    // Feedb punt nr 4
+    if (userExists) {
+      return res.status(409).json({ error: "User already exists" });
+    }
+
     const user = await userService.createUser(req.body);
 
-    res.status(201).json(user);
+    const { password, ...safeUser } = user;
+
+    res.status(201).json(safeUser);
   } catch (error) {
     next(error);
   }
@@ -63,7 +86,9 @@ router.put("/:id", authenticateToken, async (req, res, next) => {
 
     const user = await userService.updateUser(req.params.id, req.body);
 
-    res.status(200).json(user);
+    const { password, ...safeUser } = user;
+
+    res.status(200).json(safeUser);
   } catch (error) {
     next(error);
   }
@@ -79,7 +104,7 @@ router.delete("/:id", authenticateToken, async (req, res, next) => {
 
     await userService.deleteUser(req.params.id);
 
-    res.status(200).send();
+    res.status(200).json({ message: "User deleted" });
   } catch (error) {
     next(error);
   }

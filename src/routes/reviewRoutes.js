@@ -43,6 +43,13 @@ router.post("/", authenticateToken, async (req, res, next) => {
 
     const review = await reviewService.createReview(reviewData);
 
+    // Check op null
+    if (!review) {
+      return res.status(400).json({
+        error: "Ongeldige review data",
+      });
+    }
+
     res.status(201).json(review);
   } catch (error) {
     next(error);
@@ -58,6 +65,13 @@ router.put("/:id", authenticateToken, async (req, res, next) => {
     }
 
     const review = await reviewService.updateReview(req.params.id, req.body);
+
+    // Check
+    if (!review) {
+      return res.status(400).json({
+        error: "Ongeldige update data",
+      });
+    }
 
     res.status(200).json(review);
   } catch (error) {
@@ -75,7 +89,7 @@ router.delete("/:id", authenticateToken, async (req, res, next) => {
 
     await reviewService.deleteReview(req.params.id);
 
-    res.status(200).send();
+    res.status(200).json({ message: "Review deleted" });
   } catch (error) {
     next(error);
   }

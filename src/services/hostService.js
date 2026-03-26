@@ -3,26 +3,46 @@
 import prisma from "./prisma.js";
 
 export async function getAllHosts() {
-  return prisma.host.findMany();
+  const hosts = await prisma.host.findMany();
+
+  //password verwijderen uit response (feedback punt 2)
+  return hosts.map(({ password, ...rest }) => rest);
 }
 
 export async function getHostById(id) {
-  return prisma.host.findUnique({
+  const host = await prisma.host.findUnique({
     where: { id },
   });
+
+  if (!host) return null;
+
+  // password verwijderen uit response (feedback punt 2)
+  const { password, ...safeHost } = host;
+
+  return safeHost;
 }
 
 export async function createHost(data) {
-  return prisma.host.create({
+  const host = await prisma.host.create({
     data,
   });
+
+  //passw niet teruggeven
+  const { password, ...safeHost } = host;
+
+  return safeHost;
 }
 
 export async function updateHost(id, data) {
-  return prisma.host.update({
+  const host = await prisma.host.update({
     where: { id },
     data,
   });
+
+  //password niet teruggeven
+  const { password, ...safeHost } = host;
+
+  return safeHost;
 }
 
 export async function deleteHost(id) {
@@ -44,7 +64,12 @@ export async function deleteHost(id) {
     where: { hostId: id },
   });
 
-  return prisma.host.delete({
+  const host = await prisma.host.delete({
     where: { id },
   });
+
+  // pass niet teruggeven
+  const { password, ...safeHost } = host;
+
+  return safeHost;
 }

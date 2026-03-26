@@ -18,7 +18,15 @@ router.get("/", async (req, res, next) => {
       );
     }
 
-    res.status(200).json(hosts);
+    // feedb punt 5
+    if (hosts.length === 0) {
+      return res.status(404).json({ error: "No hosts found" });
+    }
+
+    // feedback punt 2
+    const safeHosts = hosts.map(({ password, ...rest }) => rest);
+
+    res.status(200).json(safeHosts);
   } catch (error) {
     next(error);
   }
@@ -32,7 +40,10 @@ router.get("/:id", async (req, res, next) => {
       return res.status(404).json({ error: "Host not found" });
     }
 
-    res.status(200).json(host);
+    // feedb punt 2
+    const { password, ...safeHost } = host;
+
+    res.status(200).json(safeHost);
   } catch (error) {
     next(error);
   }
@@ -42,7 +53,10 @@ router.post("/", authenticateToken, async (req, res, next) => {
   try {
     const host = await hostService.createHost(req.body);
 
-    res.status(201).json(host);
+    // feedb 2
+    const { password, ...safeHost } = host;
+
+    res.status(201).json(safeHost);
   } catch (error) {
     next(error);
   }
@@ -58,7 +72,9 @@ router.put("/:id", authenticateToken, async (req, res, next) => {
 
     const host = await hostService.updateHost(req.params.id, req.body);
 
-    res.status(200).json(host);
+    const { password, ...safeHost } = host;
+
+    res.status(200).json(safeHost);
   } catch (error) {
     next(error);
   }
