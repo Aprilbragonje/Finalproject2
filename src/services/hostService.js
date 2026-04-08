@@ -23,16 +23,28 @@ export async function getHostById(id) {
 }
 
 export async function createHost(data) {
+  //check of host al bestaat (op username!)
+  const existingHost = await prisma.host.findFirst({
+    where: {
+      username: data.username,
+    },
+  });
+
+  if (existingHost) {
+    return {
+      status: 409,
+      message: "Host already exists",
+    };
+  }
+
   const host = await prisma.host.create({
     data,
   });
 
-  //passw niet teruggeven
   const { password, ...safeHost } = host;
 
   return safeHost;
 }
-
 export async function updateHost(id, data) {
   const host = await prisma.host.update({
     where: { id },

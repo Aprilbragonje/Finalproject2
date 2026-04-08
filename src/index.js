@@ -18,12 +18,11 @@ Sentry.init({
   dsn: process.env.SENTRY_DSN,
 });
 
-app.use(express.json());
-
 // feedb 1
 app.use(Sentry.Handlers.requestHandler()); //sentry
 
 // Logging midlew
+app.use(express.json());
 app.use(requestLogger);
 
 // Routes
@@ -34,20 +33,15 @@ app.use("/properties", propertyRoutes);
 app.use("/bookings", bookingRoutes);
 app.use("/reviews", reviewRoutes);
 
+app.get("/error-test", (req, res) => {
+  throw new Error("Sentry werkt!");
+});
+
 app.use(Sentry.Handlers.errorHandler());
 
 // Test route
 app.get("/", (req, res) => {
   res.send("Hello world!");
-});
-
-app.get("/error-test", () => {
-  throw new Error("Sentry werkt!");
-});
-
-app.use((err, req, res, next) => {
-  Sentry.captureException(err);
-  next(err);
 });
 
 // Global err

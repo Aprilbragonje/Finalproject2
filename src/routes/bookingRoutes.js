@@ -14,7 +14,11 @@ router.get("/", async (req, res, next) => {
     if (userId) {
       bookings = bookings.filter((b) => b.userId === userId);
     }
-
+    if (!bookings || bookings.length === 0) {
+      return res.status(404).json({
+        error: "No bookings found",
+      });
+    }
     res.status(200).json(bookings);
   } catch (error) {
     next(error);

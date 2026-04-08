@@ -644,8 +644,8 @@
               "script": {
                 "id": "f55b6bbf-f08a-42d5-ac24-d7fafa3249bf",
                 "exec": [
-                  "pm.test(\"Response status code is 400\", function() {",
-                  "    pm.response.to.have.status(400);",
+                  "pm.test(\"Response status code is 409\", function() {",
+                  "    pm.response.to.have.status(409);",
                   "});",
                   ""
                 ],
@@ -808,82 +808,82 @@
                 }
               ]
             },
-			{
-				"name": "Get non-existent property by ID",
-				"event": [
-				  {
-					"listen": "test",
-					"script": {
-					  "id": "184b08d9-08a3-4563-9f0d-30e4fe54c9ac",
-					  "exec": [
-						"pm.test(\"Response status code is 404\", function() {",
-						"    pm.response.to.have.status(404);",
-						"});",
-						""
-					  ],
-					  "type": "text/javascript"
-					}
-				  }
-				],
-				"id": "964ef943-89ba-4c0e-ad56-b1f931197ca8",
-				"protocolProfileBehavior": {
-				  "disableBodyPruning": true
-				},
-				"request": {
-				  "method": "GET",
-				  "header": [
-					{
-					  "key": "Accept",
-					  "value": "application/json"
-					}
-				  ],
-				  "url": {
-					"raw": "{{baseUrl}}/properties/:propertyId",
-					"host": ["{{baseUrl}}"],
-					"path": ["properties", ":propertyId"],
-					"variable": [
-					  {
-						"key": "propertyId",
-						"value": "w0123456-78f0-1234-5678-9abcdef01234",
-						"description": "(Required) "
-					  }
-					]
-				  }
-				},
-				"response": [
-				  {
-					"id": "ebbfcb07-d6b8-4a2f-a6f2-91572866ea25",
-					"name": "Property not found",
-					"originalRequest": {
-					  "method": "GET",
-					  "header": [],
-					  "url": {
-						"raw": "{{baseUrl}}/properties/:propertyId",
-						"host": ["{{baseUrl}}"],
-						"path": ["properties", ":propertyId"],
-						"variable": [
-						  {
-							"key": "propertyId",
-							"value": "in",
-							"description": "(Required) "
-						  }
-						]
-					  }
-					},
-					"status": "Not Found",
-					"code": 404,
-					"_postman_previewlanguage": "text",
-					"header": [
-					  {
-						"key": "Content-Type",
-						"value": "text/plain"
-					  }
-					],
-					"cookie": [],
-					"body": ""
-				  }
-				]
-			},
+            {
+              "name": "Get non-existent property by ID",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "184b08d9-08a3-4563-9f0d-30e4fe54c9ac",
+                    "exec": [
+                      "pm.test(\"Response status code is 404\", function() {",
+                      "    pm.response.to.have.status(404);",
+                      "});",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "id": "964ef943-89ba-4c0e-ad56-b1f931197ca8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/properties/:propertyId",
+                  "host": ["{{baseUrl}}"],
+                  "path": ["properties", ":propertyId"],
+                  "variable": [
+                    {
+                      "key": "propertyId",
+                      "value": "w0123456-78f0-1234-5678-9abcdef01234",
+                      "description": "(Required) "
+                    }
+                  ]
+                }
+              },
+              "response": [
+                {
+                  "id": "ebbfcb07-d6b8-4a2f-a6f2-91572866ea25",
+                  "name": "Property not found",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/properties/:propertyId",
+                      "host": ["{{baseUrl}}"],
+                      "path": ["properties", ":propertyId"],
+                      "variable": [
+                        {
+                          "key": "propertyId",
+                          "value": "in",
+                          "description": "(Required) "
+                        }
+                      ]
+                    }
+                  },
+                  "status": "Not Found",
+                  "code": 404,
+                  "_postman_previewlanguage": "text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "text/plain"
+                    }
+                  ],
+                  "cookie": [],
+                  "body": ""
+                }
+              ]
+            },
             {
               "name": "Update property by ID",
               "event": [

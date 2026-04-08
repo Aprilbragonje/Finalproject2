@@ -20,7 +20,11 @@ router.get("/", async (req, res, next) => {
         (p) => p.pricePerNight === parseFloat(pricePerNight),
       );
     }
-
+    if (!properties || properties.length === 0) {
+      return res.status(404).json({
+        error: "No properties found",
+      });
+    }
     res.status(200).json(properties);
   } catch (error) {
     next(error);

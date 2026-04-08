@@ -48,12 +48,15 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
-
 router.post("/", authenticateToken, async (req, res, next) => {
   try {
     const host = await hostService.createHost(req.body);
-
-    // feedb 2
+    //nieuwe check conflict status teruggeven en extra check voor de negative testign
+    if (host.status === 409) {
+      return res.status(409).json({
+        message: host.message,
+      });
+    }
     const { password, ...safeHost } = host;
 
     res.status(201).json(safeHost);
