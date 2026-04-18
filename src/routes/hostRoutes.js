@@ -50,6 +50,14 @@ router.get("/:id", async (req, res, next) => {
 });
 router.post("/", authenticateToken, async (req, res, next) => {
   try {
+    const { username, password, name, email, phoneNumber, aboutMe } = req.body;
+    if (!username || !password || !name || !email || !phoneNumber || !aboutMe) {
+      return res.status(400).json({
+        error:
+          "Missing required fields: username, password, name, email, phoneNumber",
+      });
+    }
+
     const host = await hostService.createHost(req.body);
     //nieuwe check conflict status teruggeven en extra check voor de negative testign
     if (host.status === 409) {
@@ -57,7 +65,7 @@ router.post("/", authenticateToken, async (req, res, next) => {
         message: host.message,
       });
     }
-    const { password, ...safeHost } = host;
+    const { password: _, ...safeHost } = host;
 
     res.status(201).json(safeHost);
   } catch (error) {

@@ -47,6 +47,14 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", authenticateToken, async (req, res, next) => {
   try {
+    const { title, description, location, pricePerNight, hostId } = req.body;
+    if (!title || !description || !location || !pricePerNight || !hostId) {
+      return res.status(400).json({
+        error:
+          "Missing required fields: title, description, location, pricePerNight, hostId",
+      });
+    }
+
     const property = await propertyService.createProperty(req.body);
 
     res.status(201).json(property);

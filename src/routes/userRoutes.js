@@ -54,6 +54,14 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
+    const { username, password, email, name, phoneNumber } = req.body;
+    if (!username || !password || !email || !name || !phoneNumber) {
+      return res.status(400).json({
+        error:
+          "Missing required fields: username, password, email, name, phoneNumber",
+      });
+    }
+
     // Feedb punt 4
     const existingUsers = await userService.getAllUsers();
 
@@ -68,7 +76,7 @@ router.post("/", async (req, res, next) => {
 
     const user = await userService.createUser(req.body);
 
-    const { password, ...safeUser } = user;
+    const { password: _, ...safeUser } = user;
 
     res.status(201).json(safeUser);
   } catch (error) {

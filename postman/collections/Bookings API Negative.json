@@ -644,8 +644,8 @@
               "script": {
                 "id": "f55b6bbf-f08a-42d5-ac24-d7fafa3249bf",
                 "exec": [
-                  "pm.test(\"Response status code is 409\", function() {",
-                  "    pm.response.to.have.status(409);",
+                  "pm.test(\"Response status code is 400\", function() {",
+                  "    pm.response.to.have.status(400);",
                   "});",
                   ""
                 ],

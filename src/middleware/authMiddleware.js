@@ -9,14 +9,9 @@ export function authenticateToken(req, res, next) {
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  let token;
-
-  if (authHeader.startsWith("Bearer ")) {
-    token = authHeader.split(" ")[1];
-  } else {
-    token = authHeader;
-  }
-
+  const token = authHeader.startsWith("Bearer ")
+    ? authHeader.split(" ")[1]
+    : authHeader;
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 

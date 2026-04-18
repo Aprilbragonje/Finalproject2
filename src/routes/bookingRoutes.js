@@ -41,6 +41,19 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", authenticateToken, async (req, res, next) => {
   try {
+    if (
+      !req.body.propertyId ||
+      !req.body.userId ||
+      !req.body.checkinDate ||
+      !req.body.checkoutDate ||
+      !req.body.numberOfGuests
+    ) {
+      return res.status(400).json({
+        error:
+          "Missing required fields: propertyId, userId, checkinDate, checkoutDate, numberOfGuests",
+      });
+    }
+
     const { propertyId, userId, checkinDate, checkoutDate, numberOfGuests } =
       req.body;
 

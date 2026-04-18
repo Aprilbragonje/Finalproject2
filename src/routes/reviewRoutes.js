@@ -32,6 +32,17 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", authenticateToken, async (req, res, next) => {
   try {
+    if (
+      !req.body.propertyId ||
+      !req.body.userId ||
+      !req.body.rating ||
+      !req.body.comment
+    ) {
+      return res.status(400).json({
+        error: "Missing required fields: propertyId, userId, rating, comment",
+      });
+    }
+
     const { propertyId, rating, comment, userId } = req.body;
 
     const reviewData = {
